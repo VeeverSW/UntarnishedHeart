@@ -8,7 +8,7 @@ using UntarnishedHeart.Managers;
 
 namespace UntarnishedHeart.Windows;
 
-public class PresetEditor() : Window($"预设编辑器###{PluginName}-PresetEditor", ImGuiWindowFlags.NoScrollbar)
+public class PresetEditor() : Window($"预设编辑器###{PluginName}-PresetEditor")
 {
     private static int SelectedPresetIndex;
 
@@ -18,7 +18,7 @@ public class PresetEditor() : Window($"预设编辑器###{PluginName}-PresetEdit
         ImGui.Text("选择预设:");
 
         ImGui.SameLine();
-        ImGui.SetNextItemWidth(150f * ImGuiHelpers.GlobalScale);
+        ImGui.SetNextItemWidth(200f * ImGuiHelpers.GlobalScale);
 
         if (SelectedPresetIndex > Service.Config.Presets.Count - 1)
             SelectedPresetIndex = 0;
@@ -46,6 +46,10 @@ public class PresetEditor() : Window($"预设编辑器###{PluginName}-PresetEdit
                 }
             }
         }
+        
+        ImGui.SameLine();
+        if (ImGuiOm.ButtonIcon("SavePresets", FontAwesomeIcon.Save, "保存预设", true))
+            Service.Config.Save();
 
         ImGui.SameLine();
         if (ImGuiOm.ButtonIcon("AddNewPreset", FontAwesomeIcon.FileCirclePlus, "添加预设", true))
@@ -79,4 +83,6 @@ public class PresetEditor() : Window($"预设编辑器###{PluginName}-PresetEdit
 
         selectedPreset.Draw();
     }
+
+    public void Dispose() { }
 }

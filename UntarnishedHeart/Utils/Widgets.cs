@@ -1,11 +1,11 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
 using Dalamud.Interface.Utility;
 using Dalamud.Interface.Utility.Raii;
 using ImGuiNET;
-using Lumina.Excel.GeneratedSheets;
+using Lumina.Excel.Sheets;
 
 namespace UntarnishedHeart.Utils;
 
@@ -17,7 +17,7 @@ public static class Widgets
         var selectState = false;
 
         var previewText =
-            LuminaCache.TryGetRow<TerritoryType>(selected, out var zone) && zone.ContentFinderCondition.Value != null
+            LuminaGetter.TryGetRow<TerritoryType>(selected, out var zone) && zone.ContentFinderCondition.IsValid
                 ? $"{zone.ContentFinderCondition.Value.Name.ExtractText()}"
                 : "未选择任何有效副本";
         
@@ -76,7 +76,7 @@ public static class Widgets
                         ImGui.RadioButton(string.Empty, state);
 
                     ImGui.TableNextColumn();
-                    ImGui.Image(ImageHelper.GetIcon(contentPair.Value.ContentType.Value.Icon).ImGuiHandle,
+                    ImGui.Image(ImageHelper.GetGameIcon(contentPair.Value.ContentType.Value.Icon).ImGuiHandle,
                                 ImGuiHelpers.ScaledVector2(20f));
 
                     ImGui.TableNextColumn();
@@ -89,7 +89,7 @@ public static class Widgets
                         selectState = true;
                     }
 
-                    var image = ImageHelper.GetIcon(contentPair.Value.Image);
+                    var image = ImageHelper.GetGameIcon(contentPair.Value.Image);
                     if (image != null && ImGui.IsItemHovered())
                     {
                         using (ImRaii.Tooltip())
